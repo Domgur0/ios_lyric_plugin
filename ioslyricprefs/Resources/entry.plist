@@ -1,0 +1,9 @@
+{
+    entry = {
+        bundle = iOSLyricPrefs;
+        cell = PSLinkCell;
+        detail = LPPRootListController;
+        isController = 1;
+        label = "iOS Lyric Plugin";
+    };
+}
