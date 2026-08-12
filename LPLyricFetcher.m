@@ -2,7 +2,7 @@
 
 @implementation LPLyricFetcher
 
-- (void)fetchLyricsForTitle:(NSString *)title artist:(NSString *)artist provider:(LPLyricProvider)provider completion:(void(^)(LPLyricDocument * _Nullable document, NSError * _Nullable error))completion {
+- (void)fetchLyricsForTitle:(NSString *)title artist:(NSString *)artist provider:(__unused LPLyricProvider)provider completion:(void(^)(LPLyricDocument * _Nullable document, NSError * _Nullable error))completion {
     if (title.length == 0) {
         completion(nil, [NSError errorWithDomain:@"LPLyricFetcher" code:400 userInfo:@{NSLocalizedDescriptionKey: @"Missing title"}]);
         return;

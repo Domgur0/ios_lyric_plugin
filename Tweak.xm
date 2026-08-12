@@ -9,7 +9,7 @@ extern void MRMediaRemoteRegisterForNowPlayingNotifications(dispatch_queue_t que
 extern void MRMediaRemoteGetNowPlayingInfo(dispatch_queue_t queue, void (^block)(CFDictionaryRef information));
 
 static NSString * const kLPPrefsIdentifier = @"com.domgur0.ioslyricplugin";
-static const char *kLPPrefsReloadNotification = "com.domgur0.ioslyricplugin/preferenceschanged";
+static CFStringRef const kLPPrefsReloadNotificationCF = CFSTR("com.domgur0.ioslyricplugin/preferenceschanged");
 
 @interface LPLyricPluginManager : NSObject
 @property (nonatomic, strong) UIWindow *window;
@@ -56,7 +56,7 @@ static const char *kLPPrefsReloadNotification = "com.domgur0.ioslyricplugin/pref
 }
 
 - (void)registerPreferenceNotifications {
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), (__bridge const void *)(self), preferenceReloadCallback, CFStringCreateWithCString(NULL, kLPPrefsReloadNotification, kCFStringEncodingUTF8), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), (__bridge const void *)(self), preferenceReloadCallback, kLPPrefsReloadNotificationCF, NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 - (void)registerMediaNotifications {

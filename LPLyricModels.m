@@ -1,4 +1,5 @@
 #import "LPLyricModels.h"
+#import <math.h>
 
 @implementation LPLyricLine
 @end
