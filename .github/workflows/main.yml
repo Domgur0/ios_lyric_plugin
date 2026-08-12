@@ -10,30 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      THEOS: /home/runner/theos
+      THEOS: ${{ github.workspace }}/theos
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            fakeroot \
-            git \
-            perl \
-            clang \
-            build-essential \
-            ldid \
-            xz-utils \
-            libplist-utils
-
       - name: Setup Theos
-        run: |
-          if [ ! -d "$THEOS" ]; then
-            git clone --depth 1 https://github.com/theos/theos.git $THEOS
-          fi
+        uses: Randomblock1/theos-action@v1
+        with:
+          theos-dir: ${{ env.THEOS }}
 
       - name: Build rootless package
         run: |
