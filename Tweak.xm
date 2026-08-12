@@ -5,8 +5,14 @@
 #import "LPLyricFetcher.h"
 #import "LPLyricHUDView.h"
 
-extern void MRMediaRemoteRegisterForNowPlayingNotifications(dispatch_queue_t queue);
-extern void MRMediaRemoteGetNowPlayingInfo(dispatch_queue_t queue, void (^block)(CFDictionaryRef information));
+#ifdef __cplusplus
+extern "C" {
+#endif
+void MRMediaRemoteRegisterForNowPlayingNotifications(dispatch_queue_t queue);
+void MRMediaRemoteGetNowPlayingInfo(dispatch_queue_t queue, void (^block)(CFDictionaryRef information));
+#ifdef __cplusplus
+}
+#endif
 
 static NSString * const kLPPrefsIdentifier = @"com.domgur0.ioslyricplugin";
 static CFStringRef const kLPPrefsReloadNotificationCF = CFSTR("com.domgur0.ioslyricplugin/preferenceschanged");
