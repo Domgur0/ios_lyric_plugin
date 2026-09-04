@@ -32,15 +32,3 @@ jobs:
           name: rootless-deb
           path: packages/*.deb
           if-no-files-found: error
-
-      - name: Build roothide package
-        run: |
-          make clean
-          make package THEOS=$THEOS THEOS_PACKAGE_SCHEME=roothide
-
-      - name: Upload roothide artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: roothide-deb
-          path: packages/*.deb
-          if-no-files-found: error
