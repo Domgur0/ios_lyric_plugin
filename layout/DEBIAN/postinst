@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "configure" ]; then
+    if command -v sbreload >/dev/null 2>&1; then
+        sbreload || true
+    elif [ -x /var/jb/usr/bin/sbreload ]; then
+        /var/jb/usr/bin/sbreload || true
+    elif command -v killall >/dev/null 2>&1; then
+        killall -9 SpringBoard || true
+    fi
+fi
+
+exit 0
