@@ -14,8 +14,8 @@ void MRMediaRemoteGetNowPlayingInfo(dispatch_queue_t queue, void (^block)(CFDict
 }
 #endif
 
-static NSString * const kLPPrefsIdentifier = @"com.domgur0.ioslyricplugin";
-static CFStringRef const kLPPrefsReloadNotificationCF = CFSTR("com.domgur0.ioslyricplugin/preferenceschanged");
+static NSString * const kLPPrefsIdentifier = @"com.domgur0.lyric";
+static CFStringRef const kLPPrefsReloadNotificationCF = CFSTR("com.domgur0.lyric/preferenceschanged");
 
 @interface LPLyricPluginManager : NSObject
 @property (nonatomic, strong) UIWindow *window;
