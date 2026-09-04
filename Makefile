@@ -1,6 +1,6 @@
 ARCHS = arm64 arm64e
 TARGET = iphone:clang:latest:16.0
-THEOS_PACKAGE_SCHEME ?= roothide
+THEOS_PACKAGE_SCHEME ?= rootless
 
 include $(THEOS)/makefiles/common.mk
 
@@ -18,3 +18,15 @@ SUBPROJECTS += ioslyricprefs
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 include $(THEOS_MAKE_PATH)/aggregate.mk
+
+.PHONY: package-rootless package-roothide package-both
+
+package-rootless:
+	$(MAKE) package THEOS_PACKAGE_SCHEME=rootless
+
+package-roothide:
+	$(MAKE) package THEOS_PACKAGE_SCHEME=roothide
+
+package-both:
+	$(MAKE) clean package-rootless
+	$(MAKE) clean package-roothide
