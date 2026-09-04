@@ -1,6 +1,6 @@
 # iOS Lyric Plugin
 
-iOS 16+ 越狱歌词 HUD 插件（默认 rootless 打包方案），实现：
+iOS 16+ 越狱歌词 HUD 插件（默认 roothide 打包方案），实现：
 
 - 根据当前播放歌曲自动获取歌词（默认 Netease）
 - SpringBoard 顶层 HUD 浮窗显示当前行与下一行歌词
@@ -21,7 +21,7 @@ iOS 16+ 越狱歌词 HUD 插件（默认 rootless 打包方案），实现：
 使用 Theos：
 
 ```bash
-make package THEOS=/path/to/theos
+make package THEOS=/path/to/theos THEOS_PACKAGE_SCHEME=roothide
 ```
 
-安装后会尝试自动刷新 SpringBoard；若设备环境拦截该操作，可手动执行一次重启用户空间或 Respring。
+安装后不会自动重启用户空间或 Respring，请在你确认环境安全后再手动执行。

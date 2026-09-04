@@ -17,10 +17,18 @@
             return;
         }
 
-        NSString *minuteText = [line substringWithRange:[match rangeAtIndex:1]];
-        NSString *secondText = [line substringWithRange:[match rangeAtIndex:2]];
-        NSString *fractionText = [line substringWithRange:[match rangeAtIndex:3]];
-        NSString *lyricText = [[line substringWithRange:[match rangeAtIndex:4]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSRange minuteRange = [match rangeAtIndex:1];
+        NSRange secondRange = [match rangeAtIndex:2];
+        NSRange fractionRange = [match rangeAtIndex:3];
+        NSRange lyricRange = [match rangeAtIndex:4];
+        if (minuteRange.location == NSNotFound || secondRange.location == NSNotFound || lyricRange.location == NSNotFound) {
+            return;
+        }
+
+        NSString *minuteText = [line substringWithRange:minuteRange];
+        NSString *secondText = [line substringWithRange:secondRange];
+        NSString *fractionText = (fractionRange.location != NSNotFound) ? [line substringWithRange:fractionRange] : @"";
+        NSString *lyricText = [[line substringWithRange:lyricRange] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if (lyricText.length == 0) {
             return;
         }

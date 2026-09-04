@@ -6,4 +6,4 @@ Description: iOS16+ floating HUD lyrics plugin with fetch and karaoke rendering.
 Maintainer: Domgur0
 Author: Domgur0
 Section: Tweaks
-Depends: mobilesubstrate, preferenceloader
+Depends: mobilesubstrate | ellekit, preferenceloader

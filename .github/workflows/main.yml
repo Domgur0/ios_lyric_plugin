@@ -21,14 +21,14 @@ jobs:
         with:
           theos-dir: ${{ env.THEOS }}
 
-      - name: Build rootless package
+      - name: Build roothide package
         run: |
           make clean
-          make package THEOS=$THEOS THEOS_PACKAGE_SCHEME=rootless
+          make package THEOS=$THEOS THEOS_PACKAGE_SCHEME=roothide
 
-      - name: Upload rootless artifact
+      - name: Upload roothide artifact
         uses: actions/upload-artifact@v4
         with:
-          name: rootless-deb
+          name: roothide-deb
           path: packages/*.deb
           if-no-files-found: error
