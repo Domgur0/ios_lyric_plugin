@@ -40,7 +40,7 @@
 
 - (NSArray<NSString *> *)searchKeywordsForTitle:(NSString *)title artist:(NSString *)artist {
     NSString *trimmedTitle = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *trimmedArtist = [[artist ?: @""] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *trimmedArtist = [(artist ?: @"") stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSMutableArray<NSString *> *keywords = [NSMutableArray array];
 
     if (trimmedTitle.length > 0 && trimmedArtist.length > 0) {
