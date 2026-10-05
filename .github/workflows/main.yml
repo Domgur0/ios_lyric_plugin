@@ -20,6 +20,7 @@ jobs:
         uses: Randomblock1/theos-action@v1
         with:
           theos-dir: ${{ env.THEOS }}
+          theos-src: https://github.com/roothide/theos
 
       - name: Build rootless package
         run: |
