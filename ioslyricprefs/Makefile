@@ -8,7 +8,7 @@ iOSLyricPrefs_FILES = LPPRootListController.m
 iOSLyricPrefs_FRAMEWORKS = UIKit
 iOSLyricPrefs_PRIVATE_FRAMEWORKS = Preferences
 iOSLyricPrefs_INSTALL_PATH = /Library/PreferenceBundles
-iOSLyricPrefs_RESOURCE_DIRS = Resources
+iOSLyricPrefs_RESOURCE_FILES = Resources/Root.plist Resources/entry.plist Resources/iOSLyricPrefs.plist
 iOSLyricPrefs_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/bundle.mk
