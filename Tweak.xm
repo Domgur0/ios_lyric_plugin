@@ -87,7 +87,7 @@ static void mediaInfoChangedCallback(CFNotificationCenterRef center, void *obser
 
     CGRect bounds = UIScreen.mainScreen.bounds;
     CGFloat width = MIN(CGRectGetWidth(bounds) - 24, 360);
-    self.window = [[UIWindow alloc] initWithFrame:CGRectMake((CGRectGetWidth(bounds) - width) / 2.0, 96, width, 64)];
+    self.window = [[UIWindow alloc] initWithFrame:CGRectMake((CGRectGetWidth(bounds) - width) / 2.0, 96, width, 74)];
     self.window.windowLevel = UIWindowLevelStatusBar + 200;
     self.window.hidden = NO;
     self.window.backgroundColor = UIColor.clearColor;
@@ -131,6 +131,24 @@ static void mediaInfoChangedCallback(CFNotificationCenterRef center, void *obser
     if (!dict[@"autoHideSeconds"]) {
         dict[@"autoHideSeconds"] = @6;
     }
+    if (!dict[@"showNextLine"]) {
+        dict[@"showNextLine"] = @YES;
+    }
+    if (!dict[@"hudWidth"]) {
+        dict[@"hudWidth"] = @360;
+    }
+    if (!dict[@"hudHeight"]) {
+        dict[@"hudHeight"] = @74;
+    }
+    if (!dict[@"xOffset"]) {
+        dict[@"xOffset"] = @(-1);
+    }
+    if (!dict[@"hudOpacity"]) {
+        dict[@"hudOpacity"] = @1.0;
+    }
+    if (!dict[@"cornerRadius"]) {
+        dict[@"cornerRadius"] = @14;
+    }
 
     self.preferences = dict.copy;
     [self applyPreferencesToUI];
@@ -143,10 +161,19 @@ static void mediaInfoChangedCallback(CFNotificationCenterRef center, void *obser
 
     [self.hudView applyPreferences:self.preferences];
 
-    CGRect frame = self.window.frame;
-    frame.origin.y = [self.preferences[@"yOffset"] doubleValue];
+    CGRect bounds = UIScreen.mainScreen.bounds;
+    CGFloat width = MIN(MAX([self.preferences[@"hudWidth"] doubleValue], 180.0), MAX(180.0, CGRectGetWidth(bounds) - 12.0));
+    CGFloat height = MIN(MAX([self.preferences[@"hudHeight"] doubleValue], 52.0), MAX(52.0, CGRectGetHeight(bounds) - 12.0));
+    CGFloat maxX = MAX(6.0, CGRectGetWidth(bounds) - width - 6.0);
+    CGFloat maxY = MAX(6.0, CGRectGetHeight(bounds) - height - 6.0);
+    CGFloat xOffset = [self.preferences[@"xOffset"] doubleValue];
+    CGFloat x = xOffset < 0 ? ((CGRectGetWidth(bounds) - width) / 2.0) : MIN(MAX(xOffset, 6.0), maxX);
+    CGFloat y = MIN(MAX([self.preferences[@"yOffset"] doubleValue], 6.0), maxY);
+
+    CGRect frame = CGRectMake(x, y, width, height);
     self.window.frame = frame;
     self.window.hidden = ![self.preferences[@"enabled"] boolValue];
+    self.window.alpha = MIN(MAX([self.preferences[@"hudOpacity"] doubleValue], 0.2), 1.0);
 }
 
 - (NSTimeInterval)currentPlaybackTime {
@@ -217,7 +244,8 @@ static void mediaInfoChangedCallback(CFNotificationCenterRef center, void *obser
         shouldHide = ([[NSDate date] timeIntervalSinceDate:self.lastLyricUpdate] > autoHide && !line);
     }
 
-    self.window.alpha = shouldHide ? 0 : 1;
+    CGFloat visibleAlpha = MIN(MAX([self.preferences[@"hudOpacity"] doubleValue], 0.2), 1.0);
+    self.window.alpha = shouldHide ? 0 : visibleAlpha;
 }
 
 @end

@@ -10,38 +10,43 @@
     LPLyricDocument *document = [[LPLyricDocument alloc] init];
     NSMutableArray<LPLyricLine *> *parsed = [NSMutableArray array];
 
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\d{1,2}):(\\d{1,2})(?:\\.(\\d{1,3}))?\\](.*)" options:0 error:nil];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\[(\\d{1,2}):(\\d{1,2})(?:\\.(\\d{1,3}))?\\]" options:0 error:nil];
     [lrc enumerateLinesUsingBlock:^(NSString * _Nonnull line, BOOL * _Nonnull stop) {
-        NSTextCheckingResult *match = [regex firstMatchInString:line options:0 range:NSMakeRange(0, line.length)];
-        if (!match || match.numberOfRanges < 5) {
+        NSArray<NSTextCheckingResult *> *matches = [regex matchesInString:line options:0 range:NSMakeRange(0, line.length)];
+        if (matches.count == 0) {
             return;
         }
 
-        NSRange minuteRange = [match rangeAtIndex:1];
-        NSRange secondRange = [match rangeAtIndex:2];
-        NSRange fractionRange = [match rangeAtIndex:3];
-        NSRange lyricRange = [match rangeAtIndex:4];
-        if (minuteRange.location == NSNotFound || secondRange.location == NSNotFound || lyricRange.location == NSNotFound) {
+        NSUInteger lyricLocation = NSMaxRange(matches.lastObject.range);
+        if (lyricLocation > line.length) {
             return;
         }
 
-        NSString *minuteText = [line substringWithRange:minuteRange];
-        NSString *secondText = [line substringWithRange:secondRange];
-        NSString *fractionText = (fractionRange.location != NSNotFound) ? [line substringWithRange:fractionRange] : @"";
-        NSString *lyricText = [[line substringWithRange:lyricRange] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString *lyricText = [[line substringFromIndex:lyricLocation] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if (lyricText.length == 0) {
             return;
         }
 
-        NSTimeInterval seconds = minuteText.doubleValue * 60.0 + secondText.doubleValue;
-        if (fractionText.length > 0) {
-            seconds += fractionText.doubleValue / pow(10, fractionText.length);
-        }
+        for (NSTextCheckingResult *match in matches) {
+            if (match.numberOfRanges < 4) {
+                continue;
+            }
 
-        LPLyricLine *lineModel = [[LPLyricLine alloc] init];
-        lineModel.startTime = seconds;
-        lineModel.text = lyricText;
-        [parsed addObject:lineModel];
+            NSString *minuteText = [line substringWithRange:[match rangeAtIndex:1]];
+            NSString *secondText = [line substringWithRange:[match rangeAtIndex:2]];
+            NSRange fractionRange = [match rangeAtIndex:3];
+            NSString *fractionText = (fractionRange.location != NSNotFound) ? [line substringWithRange:fractionRange] : @"";
+
+            NSTimeInterval seconds = minuteText.doubleValue * 60.0 + secondText.doubleValue;
+            if (fractionText.length > 0) {
+                seconds += fractionText.doubleValue / pow(10, fractionText.length);
+            }
+
+            LPLyricLine *lineModel = [[LPLyricLine alloc] init];
+            lineModel.startTime = seconds;
+            lineModel.text = lyricText;
+            [parsed addObject:lineModel];
+        }
     }];
 
     [parsed sortUsingComparator:^NSComparisonResult(LPLyricLine * _Nonnull lhs, LPLyricLine * _Nonnull rhs) {
