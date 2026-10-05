@@ -6,6 +6,7 @@ iOS 16+ 越狱歌词 HUD 插件（支持 rootless 与 roothide 打包方案）�
 - SpringBoard 顶层 HUD 浮窗显示当前行与下一行歌词
 - 卡拉 OK 式进度填充效果
 - 可拖动、可锁定位置、可触摸穿透、无歌词自动隐藏
+- 设置页可自定义字号、颜色、宽高、圆角、透明度、横纵坐标、是否显示下一行
 - PreferenceLoader 设置页，实时 Darwin 通知刷新
 
 ## 结构
